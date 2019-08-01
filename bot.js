@@ -1,40 +1,38 @@
+const fs = require('fs');
 const Discord = require('discord.js');
+const { prefix } = require('./config.json');
+const { token } = require('./auth.json');
+
 const client = new Discord.Client();
-const auth = require('./auth.json');
-const prefix = "f!";
+client.commands = new Discord.Collection();
 
-function isToBot(msg) {
-    return (msg.content.startsWith(prefix));
-};
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-function processMsg(msg)
-{
-    if (msg.content.length<3)
-        return;
-    const content = msg.content.substr(2).toLowerCase().split(' ');
-    const command = content[0]
-    if (command === 'ping') {
-        msg.channel.send('pong')
-        return('ping');
-    }
-    if (command === 'help')
-    {
-        help(msg);
-        return('help');
-    }
-}
-function help(msg)
-{
-    msg.channel.send('Help is on the way!');
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
 }
 
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-});
-client.on('message', msg => {
-    if (isToBot(msg)) {
-      processMsg(msg);
-    }
+client.once('ready', () => {
+	console.log('Ready!');
 });
 
-client.login(auth.token);
+client.on('message', message => {
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+	const args = message.content.slice(prefix.length).split(/ +/);
+	const commandName = args.shift().toLowerCase();
+
+	if (!client.commands.has(commandName)) return;
+
+    const command = client.commands.get(commandName);
+
+	try {
+        command.execute(message, args);
+	} catch (error) {
+		console.error(error);
+		message.reply('there was an error trying to execute that command!');
+	}
+});
+
+client.login(token);
