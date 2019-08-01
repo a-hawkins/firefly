@@ -1,0 +1,14 @@
+{
+    "Commands": {
+        "help": {
+            "Description": "retuns a list of commands and how to use them",
+            "Usage": "f!help | f!help [command]",
+            "Example": "f!help ping"
+        },
+        "ping": {
+            "Description": "returns a 'pong'",
+            "Usage": "f!ping"
+        }
+        
+    }
+}
