@@ -12,7 +12,7 @@ function processMsg(msg)
 {
     if (msg.content.length<3)
         return;
-    const content = msg.content.substr(2);
+    const content = msg.content.substr(2).toLowerCase();
 
     if (content === 'ping') {
         msg.reply('pong');
