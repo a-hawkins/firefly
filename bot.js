@@ -23,7 +23,11 @@ client.on('message', message => {
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
-	if (!client.commands.has(commandName)) return;
+    if (!client.commands.has(commandName)) 
+    {
+        message.channel.send('That doesn\'t seem like a valid command...');
+        return;
+    }
 
     const command = client.commands.get(commandName);
 
