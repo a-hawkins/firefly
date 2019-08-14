@@ -1,0 +1,50 @@
+{
+    "types": [
+        {
+            "type": "bug",
+            "description": "Report an issue with the realm itself.",
+            "data": ["realm", "urgency", "body"]
+        },
+        {
+            "type": "hacking",
+            "description": "Report the use of hacks, cheats, or exploits.",
+            "data": ["realm", "urgency", "body"]
+        },
+        {
+            "type": "griefing",
+            "description": "Report rule-breaking griefing or raiding.",
+            "data": ["realm", "urgency", "body"]
+        },
+        {
+            "type": "question",
+            "description": "Get clarification on something.",
+            "data": ["realm", "urgency", "body"]
+        },
+        {
+            "type": "suggestion",
+            "description": "Make a suggestion for either the discord server or the realms.",
+            "data": ["realm", "urgency", "body"]
+        },
+        {
+            "type": "something else",
+            "description": "Report something that doesn't fit into one of the other categories.",
+            "data": ["realm", "urgency", "body"]
+        }
+    ],
+    "prompts": [
+        {
+            "label": "realm",
+            "prompt": "Which **realm** does this report pertain to? If the report isn't specific to any realm, respond with \"**N/A**\"."
+        },
+        {
+            "label": "urgency",
+            "prompt": "Rate the **urgency** of this report on a **scale of 1-5**, 1 being something that can wait with little consequence and 5 being something that absolutely needs imediate attention." ,
+            "responses": ["1", "2", "3", "4", "5"]
+        },
+        {
+            "label": "body",
+            "prompt": "Now give the **details** on what you are reporting.\nExamples of details: description of bug, names of hackers or griefers, question being asked...\nAdd any links, screenshots, etc. that may be helpful to an admin in dealing with your report.\nTo conlcude and send your report, send the message \"**end**\"."
+        }
+    ]
+    
+}
