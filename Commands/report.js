@@ -1,5 +1,8 @@
-const { reportChannel } = require('../config.json');
 const { types, prompts } = require('./report.json');
+const { ReportTemplate } = require ('../reportTemplate.js');
+const { sendTicket } = require ('../ticketSend.js');
+
+const fs = require('fs');
 
 var getPrompt = function (label) {
     for (item of prompts) {
@@ -10,43 +13,6 @@ var getPrompt = function (label) {
     }
 
 };
-class ReportTemplate {
-    constructor() {
-        this._dataIndex = 0;
-    };
-    set type(name) {
-        this._type = name;
-    };
-    get type() {
-        return this._type;
-    };
-    set description(desc) {
-        this._description = desc;
-    };
-    get description() {
-        return this._description;
-    };
-    set data(dataArray) {
-        this._data = dataArray;
-    };
-    get data() {
-        return this._data;
-    };
-    get hasNextData() {
-        if (this._data[this._dataIndex])
-            return true;
-        return false;
-    };
-    nextData() {
-        if (this.hasNextData) {
-            var currIndex = this._dataIndex;
-            this._dataIndex = this._dataIndex + 1;
-            return this._data[currIndex];
-        }
-    };
-
-};
-
 
 module.exports = {
     name: 'report',
@@ -71,7 +37,9 @@ module.exports = {
 
             message.author.dmChannel.send(data);
 
-
+            let ticket = {
+                author: message.author.username
+            }
             const filter = m => m.author == message.author;
             const collector = message.author.dmChannel.createMessageCollector(filter);
 
@@ -82,6 +50,8 @@ module.exports = {
                 if (types[typeIndex]) {
                     reportType = types[typeIndex].type;
                     message.author.dmChannel.send("Report type: " + reportType)
+
+                    ticket['type'] = reportType;
 
                     collector.stop("typeSelected");
 
@@ -94,7 +64,7 @@ module.exports = {
                     console.log(reportTemplate.type);
 
                     const reportCollector = message.author.dmChannel.createMessageCollector(filter);
-
+                    var response = [];
                     var nextData = reportTemplate.nextData();
                     console.log(nextData + ":");
                     var prompt = getPrompt(nextData);
@@ -102,20 +72,31 @@ module.exports = {
 
                     reportCollector.on('collect', m => {
                         console.log(`Collected ${m.content}`);
-                       
                         if (`${m.content}` == 'end') {
+                            ticket[nextData] = response;
+                            console.log("ended after: " + response);
                             reportCollector.stop("ended");
                         }
                         else if (`${m.content}` == 'cancel') {
                             message.author.send("Canceling report...")
                             console.log("Canceling report...");
                             reportCollector.stop("canceled");
+                            //ticket[nextData] = response;
                         }
-                        else if (reportTemplate.hasNextData) {
-                            nextData = reportTemplate.nextData();
-                            console.log(nextData + ":");
-                            var prompt = getPrompt(nextData);
-                            message.author.send(prompt.prompt);
+                        else {
+                            response.push(`${m.content}`);
+                            if (reportTemplate.hasNextData) {
+                                ticket[nextData] = response;
+                                let blank = [];
+                                console.log('pushing: ' + response);
+                                response = blank;
+                                console.log('this should be empty: ' +response);
+                                nextData = reportTemplate.nextData();
+                                console.log(nextData + ":");
+                                var prompt = getPrompt(nextData);
+                                message.author.send(prompt.prompt);
+                                
+                            }
                         }
 
                     });
@@ -128,6 +109,26 @@ module.exports = {
                             console.log("Report ended.");
                             message.author.send("Report ended.");
                             //TODO: handle report sendoff
+                            ticket['status'] = 'new';
+                            var ticketsJSON = [];
+                            try {
+                                let ticketsRaw = fs.readFileSync('tickets.json');
+                                ticketsJSON = JSON.parse(ticketsRaw);
+
+                            
+                                ticket['id'] = ticketsJSON.tickets[ticketsJSON.tickets.length - 1].id + 1;
+                                
+                            } catch (error) {
+                                ticketsJSON = [];
+                                ticketsJSON['tickets'] = [];
+                                ticket['id'] = 0;
+                                
+                            }
+                            
+                            //const ticketData = JSON.stringify(ticket, null, 2);
+                            ticketsJSON.tickets.push(ticket);
+                            sendTicket(ticket);
+                            fs.writeFileSync('tickets.json', JSON.stringify(ticketsJSON, null, 2));
                         }
                         else {
                             console.log("Collector stopped, but no reason given.");

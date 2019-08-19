@@ -34,7 +34,7 @@
     "prompts": [
         {
             "label": "realm",
-            "prompt": "Which **realm** does this report pertain to? If the report isn't specific to any realm, respond with \"**N/A**\"."
+            "prompt": "Which **realm** is this report for? If the report isn't specific to any realm, respond with \"**N/A**\"."
         },
         {
             "label": "urgency",

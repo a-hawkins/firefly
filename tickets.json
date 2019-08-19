@@ -1,0 +1,68 @@
+{
+  "tickets": [
+    {
+      "author": "KirbySteaks",
+      "type": "griefing",
+      "realm": [
+        "cowland"
+      ],
+      "urgency": [
+        "3"
+      ],
+      "body": [
+        "the cows have poisoned the water supply"
+      ],
+      "status": "new",
+      "id": 0
+    },
+    {
+      "author": "KirbySteaks",
+      "type": "griefing",
+      "realm": [
+        "cowland"
+      ],
+      "urgency": [
+        "4"
+      ],
+      "body": [
+        "The cows have destroyed spawn",
+        "It's really bad."
+      ],
+      "status": "new",
+      "id": 1
+    },
+    {
+      "author": "PMK744",
+      "type": "bug",
+      "realm": [
+        "Skyblock"
+      ],
+      "urgency": [
+        "3"
+      ],
+      "body": [
+        "Shop is broken",
+        "End"
+      ],
+      "status": "new",
+      "id": 2
+    },
+    {
+      "author": "KirbySteaks",
+      "type": "griefing",
+      "realm": [
+        "cowland"
+      ],
+      "urgency": [
+        "4"
+      ],
+      "body": [
+        "The cows have stolen my children.",
+        "Betty, Eddie, and Little Sue.",
+        "(Those are the children's names)"
+      ],
+      "status": "new",
+      "id": 3
+    }
+  ]
+}
