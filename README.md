@@ -1,4 +1,7 @@
-##**Firefly - A discord bot.**
+### Notice
+This project is currently on hiatus and may not be updated for a while.
+
+## **Firefly - A discord bot.**
 
 Pardon the dust. This bot is still under construction.
 
@@ -9,14 +12,14 @@ It is still in the early days of development.
 ---
 
 ## Current Status:
-####Working features:  
+#### Working features:  
 1. ping  
 2. help  
   
-####Features actively in development: 
+#### Features actively in development: 
 1. report  
   
-####Some planned features comming soon:  
+#### Some planned features comming soon:  
 1. reportRespond  
 2. reportQuery  
 3. a queryable database to store both open an archieved reports   
